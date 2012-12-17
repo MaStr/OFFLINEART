@@ -1,0 +1,24 @@
+#!/bin/ash
+
+. /etc/piratebox.common
+
+if [ -e /etc/init.d/luci_fixtime  ] ; then
+   /etc/init.d/luci_fixtime enable
+fi
+if [ -e /etc/init.d/luci_dhcp_migrate ] ; then
+   /etc/init.d/luci_dhcp_migrate enable
+fi
+if [ -e /etc/init.d/uhttpd ] ; then
+   /etc/init.d/uhttpd enable
+fi
+
+/etc/init.d/piratebox disable
+
+/etc/init.d/piratebox stop
+/etc/init.d/piratebox nodns
+
+# undo configuration
+echo "Resetting OpenWRT config to factory state..."
+pb_undoconfig
+echo "Please reboot for changes to take effect."
+
