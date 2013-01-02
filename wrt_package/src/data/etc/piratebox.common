@@ -508,8 +508,25 @@ oa_config_set_hostname(){
 oa_config_lookup_and_set_step(){
     local in_changed=$1; shift
     local config=$1; shift
+    local $filename=$1; shift
+    
+    local changed=0
 
+    if [ -f $filename ] ; then
+        echo "Found config for $config"
+	oa_config_set_config `cat $filename `
+	changed=1
+    fi
 
+    if [ $changed ] ; then
+        return 1
+     else
+        if [  $in_changed ] ; then 
+	    return 1
+	else 
+	    return 0
+	fi
+    fi
 }
 
 oa_config_lookup_and_set(){
@@ -518,30 +535,11 @@ oa_config_lookup_and_set(){
    #remember if I set anything
     local changed=0
     
-    if [ -f $oa_new_config_ssid ] ; then
-        echo "Found config for ssid"
-	oa_config_set_ssid `cat $oa_new_config_ssid `
-	changed=1
-    fi
-    
-    if [ -f $oa_new_config_txpower ] ; then
-        echo "Found config for txpower"
-	oa_config_set_txpower `cat $oa_new_config_txpower`
-	changed=1
-     fi
-
-    if [ -f $oa_new_config_channel ] ; then
-        echo "Found config for channel"
-	oa_config_set_channel `cat $oa_new_config_channel`
-	changed=1
-     fi
-
-     if [ -f $oa_new_config_hostname ] ; then
-        echo "Found config for hostname"
-	oa_config_set_hostname `cat $oa_new_config_hostname`
-	changed=1
-     fi
-
+    changed=oa_config_lookup_and_set_step $changed 'ssid'  $oa_new_config_ssid 
+    changed=oa_config_lookup_and_set_step $changed 'txpower'  $oa_new_config_txpower
+    changed=oa_config_lookup_and_set_step $changed 'channel'  $oa_new_config_channel
+    changed=oa_config_lookup_and_set_step $changed 'hostname'  $oa_new_config_hostname
+   
 
     if [ $changed ] ; then
         echo "done some changes... saving..."
