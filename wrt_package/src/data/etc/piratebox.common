@@ -327,8 +327,8 @@ pb_mkpbimg () {
 	 exit 5
       fi
    fi
-   #gzip -dc  "$pb_pb_srcImg" > "$pb_pbimg" 
-   tar xzO -f "$pb_pb_srcImg" > "$pb_pbimg" 
+   gzip -dc  "$pb_pb_srcImg" > "$pb_pbimg" 
+#   tar xzO -f "$pb_pb_srcImg" > "$pb_pbimg" 
    pb_uciset fstab pirateimage mount \
         target=$pb_pbmount \
 	device=$pb_pbimg \
