@@ -401,7 +401,18 @@ pb_update() {
       echo "${initscript}: ERROR: No Internet connection on WAN port" >&2
       exit 5
   else
-      ls -1 /usr/share/piratebox/packages/* | xargs -I {} opkg -d piratebox install {}
+      opkg -d piratebox install lighttpd
+      opkg -d piratebox install lighttpd-mod-redirect
+      opkg -d piratebox install lighttpd-mod-setenv
+      opkg -d piratebox install lighttpd-mod-alias
+      opkg -d piratebox install lighttpd-mod-cgi
+      #
+      opkg -d piratebox install python
+      opkg -d piratebox install php5
+      opkg -d piratebox install php5-cgi
+      opkg -d piratebox install php5-mod-gd
+      opkg -d piratebox install php5-mod-http
+
   fi
 
   # CAVE: ugly hack
