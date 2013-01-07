@@ -22,25 +22,27 @@ $(IPKDIR)/control.tar.gz: $(IPKDIR)/control
 control: $(IPKDIR)/control.tar.gz  $(IPKDIR)/control/control
 	
 $(IPKDIR)/control/control:
-	echo "Package: " $(NAME)   >   $@
-	echo "Version: " $VERSION  >>  $@
-	echo "Depends: " $(WRT_DEPENDENCIES) >> $@
+	echo "Package: "$(NAME)   >   $@
+	echo "Version: "$(VERSION)  >>  $@
+	echo "Depends: "$(WRT_DEPENDENCIES) >> $@
 	echo "Provides: "           >> $@
-	echo "Source: " $(WRT_SOURCE) >> $@
-	echo "Section: " $(WRT_SECTION) >> $@
-	echo "Essential: " $(WRT_ESSENTIAL) >> $@
-	echo "Priority: " $(WRT_PRIORITY)  >> $@
-	echo "Maintainer: " '$(WRT_MAINTAINER)' >> $@
-	echo "Architecture: " $(ARCH)  >> $@
-	echo "Installed-Size: "  `du -cb $(IPKDIR)/data | tail -n 1 | awk -F \b '{print $1}'` >> $@
-	echo "Description: "  $(WRT_DESCRIPTION) >> $@
+	echo "Source: "$(WRT_SOURCE) >> $@
+	echo "Section: "$(WRT_SECTION) >> $@
+	echo "Status: "$(WRT_STATUS) >> $@
+	echo "Essential: "$(WRT_ESSENTIAL) >> $@
+	echo "Priority: "$(WRT_PRIORITY)  >> $@
+	echo "Maintainer: "'$(WRT_MAINTAINER)' >> $@
+	echo "Architecture: "$(ARCH)  >> $@
+	echo "Installed-Size: "36864  >> $@
+#	echo "Installed-Size: "  `du -cb $(IPKDIR)/data | tail -n 1 | awk -F \b '{print $1}'` >> $@
+	echo "Description: "$(WRT_DESCRIPTION) >> $@
 
 $(IPKDIR)/data.tar.gz: $(IPKDIR)/data
 	tar czf $@ -C $(IPKDIR)/data .
 
 data: $(IPKDIR)/data.tar.gz 
 
-$(IPK): $(IPKDIR)/control.tar.gz $(IPKDIR)/data.tar.gz $(IPKDIR)/control $(IPKDIR)/data  $(IPKDIR)/control/control
+$(IPK): $(IPKDIR)/control/control $(IPKDIR)/control.tar.gz $(IPKDIR)/data.tar.gz $(IPKDIR)/control $(IPKDIR)/data 
 	tar czf $@ -C $(IPKDIR) control.tar.gz data.tar.gz debian-binary
 
 all: $(IPK) 

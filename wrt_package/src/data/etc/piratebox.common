@@ -16,7 +16,7 @@ pb_pb_srcImg="$pb_usbmount/offlineArt_0.1_img.gz"
 pb_pbimg="$pb_usbdir/pbIMG_ws.img"
 pb_pbmount="/opt/piratebox"
 # Backup Url for downloading Image
-pb_pb_srcImg_url="http://piratebox.aod-rpg.de/offlineArt_0.6_img.gz"
+pb_pb_srcImg_url="http://piratebox.aod-rpg.de/offlineArt_0.1_img.gz"
 
 ###offlineArt Modfications
 oa_ext_www="$pb_usbdir/www_alt"
