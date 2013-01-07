@@ -3,12 +3,14 @@
 NAME=piratebox
 START=80
 STOP=20
-EXTRA_COMMANDS="setup init update nodns updatePB mountPB"
+EXTRA_COMMANDS="setup init update nodns updatePB mountPB config exportConfig"
 EXTRA_HELP="	setup	Activate current USB and network configuration
-	init	Mount USB, and PirateBoxify a fresh USB disk
-	update	  Update PirateBox files on USB disk (and refresh packages)
-        updatePB  Updates only PirateBox files from USB stick Image-File
-	nodns	Disable local DNS redirection through dnsmasq"
+	init	     Mount USB, and PirateBoxify a fresh USB disk
+	update	     Update PirateBox files on USB disk (and refresh packages)
+        updatePB     Updates only PirateBox files from USB stick Image-File
+	exportConfig Exports only configuration
+        config       ReInitialize via config folder
+	nodns	     Disable local DNS redirection through dnsmasq"
 
 # include PirateBox shared functionality
 . /etc/piratebox.common
@@ -53,4 +55,11 @@ start() {
 stop() {
   pb_stop
 }
+config(){
+   oa_config_lookup_and_set
+   oa_config_export
+}
 
+exportConfig(){
+   oa_config_export
+}

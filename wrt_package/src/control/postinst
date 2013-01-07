@@ -45,6 +45,9 @@ fi
 /etc/init.d/piratebox init
 /etc/init.d/piratebox update
 
+#Export Config
+/etc/init.d/piratebox exportConfig 
+
 # Typically this step wrent wrong, so exit if  RC<>0
 [ "$?" != "0" ] && echo "Something went wrong during package install on ext" && \
      [ -e /var/lock/opkg.lock_ ] && \
