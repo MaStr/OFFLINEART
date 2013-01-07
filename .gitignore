@@ -1,2 +1,8 @@
-#IPKG files now only via Downloads-Section
-*.ipk
+custom_image/mod_data/version_tag
+custom_image/mod_image/
+custom_image/*img.gz
+custom_image/*.tar.gz
+wrt_package/*.ipk
+wrt_package/src/control.tar.gz
+wrt_package/src/control/control
+wrt_package/src/data.tar.gz
