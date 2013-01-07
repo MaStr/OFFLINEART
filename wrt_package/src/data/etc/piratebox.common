@@ -2,7 +2,7 @@
 # PirateBox global config. /etc/init.d/piratebox setup to take effect
 
 pb_ip="192.168.1.1"
-pb_wireless_ssid="offlineArt - Basic"
+pb_wireless_ssid="offlineArt"
 pb_hostname="offlineArt.lan"
 pb_random_hostname=""
 pb_usbdevice="/dev/sda1"
@@ -22,11 +22,13 @@ pb_pb_srcImg_url="http://piratebox.aod-rpg.de/offlineArt_0.1_img.gz"
 oa_ext_www="$pb_usbdir/www_alt"
 oa_config="$pb_usbdir/config/set"
 oa_current_config="$pb_usbdir/config"
+oa_ext_www_content="$oa_ext_www/content"
+
 
 oa_cfg_ssid="ssid.txt"
 oa_cfg_txpower="txpower.txt"
-oa_channel="channel.txt"
-oa_hostname="hostname.txt"
+oa_cfg_channel="channel.txt"
+oa_cfg_hostname="hostname.txt"
 
 #export datasets from the current uci config
 oa_current_config_ssid="$oa_current_config/$oa_cfg_ssid"
@@ -204,7 +206,7 @@ pb_setSSID() {
 }
 
 pb_netconfig() {
-  pb_setHostname $pb_random_hostname
+  pb_setHostname $pb_hostname
   
   #offlineArt disabled ---> #Add Random stuff
   #offlineArt disabled ---> echo "127.0.0.1 $pb_random_hostname ." >>/etc/hosts
@@ -215,6 +217,7 @@ pb_netconfig() {
   uci set "network.lan.proto=static"
   #CAVE: wireless config might be platform specific
   uci set "wireless.radio0.disabled=0"
+  uci set "wireless.radio0.txpower=25"
 
   pb_setSSID $pb_wireless_ssid
 
@@ -378,6 +381,8 @@ pb_init() {
    
    echo "${initscript}: Creating offlineArt www folder..."
    mkdir -p $oa_ext_www
+   echo "${initscript}: Creating offlineArt content folder..."
+   mkdir -o $oa_ext_www_content
    
 }
 
@@ -406,13 +411,20 @@ pb_update() {
       opkg -d piratebox install lighttpd-mod-setenv
       opkg -d piratebox install lighttpd-mod-alias
       opkg -d piratebox install lighttpd-mod-cgi
+      opkg -d piratebox install lighttpd-mod-rewrite
+      opkg -d piratebox install lighttpd-mod-simple-vhost
       #
       opkg -d piratebox install python
+      #
       opkg -d piratebox install php5
       opkg -d piratebox install php5-cgi
       opkg -d piratebox install php5-mod-gd
+      opkg -d piratebox install php5-mod-json
       opkg -d piratebox install php5-mod-http
 
+      ln -s /mnt/ext/etc/php.ini /etc
+      sed -i 's,;extension=gd.so,extension=gd.so,g' /etc/php.ini
+      sed -i 's,;extension=json.so,extension=json.so,g' /etc/php.ini
   fi
 
   # CAVE: ugly hack
@@ -465,11 +477,15 @@ pb_stop() {
 
 
 oa_config_export(){
-     
+    echo "Exporting current config to  $oa_current_config"
+    echo "Getting SSID of iface0 via uci"
     local ssid=$(oa_uci_export 'wireless' '@wifi-iface[0].ssid'  )
-    local txpower=$(oa_uci_export   'wireless'  '@wifi-iface[0].txpower  )
-    local channel=$(oa_uci_export   'wireless'  '@wifi-iface[0].channel )
+    echo "Getting txpower of device0 via uci"
+    local txpower=$(oa_uci_export   'wireless'  '@wifi-device[0].txpower'  )
+    echo "Getting channel of device0 via uci"
+    local channel=$(oa_uci_export   'wireless'  '@wifi-device[0].channel' )
     
+    echo "Getting hostname  via uci"
     local hostname=$(oa_uci_export  'system' '@system[0].hostname' )    
     
     echo $ssid       > "$oa_current_config_ssid"
@@ -485,7 +501,7 @@ oa_uci_export(){
    local section=$1 ; shift
 #   local type=$1 ; shift
     
-   uci show "$config.$section"
+   uci get "$config.$section"
     
 }
 
@@ -509,7 +525,7 @@ oa_config_set_hostname(){
 oa_config_lookup_and_set_step(){
     local in_changed=$1; shift
     local config=$1; shift
-    local $filename=$1; shift
+    local filename=$1; shift
     
     local changed=0
 
@@ -519,7 +535,7 @@ oa_config_lookup_and_set_step(){
 	changed=1
     fi
 
-    if [ $changed ] ; then
+    if [ "$changed" = "1" ] ; then
         return 1
      else
         if [  $in_changed ] ; then 
@@ -532,17 +548,21 @@ oa_config_lookup_and_set_step(){
 
 oa_config_lookup_and_set(){
    #checks defined variables if any file exists and run set to
-   
+    echo "Checking $oa_config folder for values to be set"
    #remember if I set anything
     local changed=0
     
+    echo " ... Checking ssid $oa_new_config_ssid"
     changed=oa_config_lookup_and_set_step $changed 'ssid'  $oa_new_config_ssid 
+    echo " ... Checking txpower $oa_new_config_txpower"
     changed=oa_config_lookup_and_set_step $changed 'txpower'  $oa_new_config_txpower
+    echo " ... Checking channel $oa_new_config_channel"
     changed=oa_config_lookup_and_set_step $changed 'channel'  $oa_new_config_channel
+    echo " ... Checking hostname $oa_new_config_hostname"
     changed=oa_config_lookup_and_set_step $changed 'hostname'  $oa_new_config_hostname
    
 
-    if [ $changed ] ; then
+    if [ "$changed" = "1" ] ; then
         echo "done some changes... saving..."
         uci commit
     fi
