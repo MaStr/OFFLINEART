@@ -4,5 +4,6 @@ cgi.assign = ( ".php" => "/usr/local/bin/php-cgi",
 	       ".py"  => "/usr/bin/python" ,
 	 )
 
-static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" , ".cgi" , ".py" ) 
+static-file.exclude-extensions += ( ".php",  ".py" ) 
+
 

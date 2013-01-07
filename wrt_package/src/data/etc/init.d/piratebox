@@ -57,7 +57,12 @@ stop() {
 }
 config(){
    oa_config_lookup_and_set
+   local change_rc=$?
    oa_config_export
+   if [ "$change_rc" == "1" ] ; then
+      echo "Severall changes were made, doing reboot..."
+      reboot
+   fi
 }
 
 exportConfig(){
