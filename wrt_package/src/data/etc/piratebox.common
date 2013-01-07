@@ -386,7 +386,7 @@ pb_init() {
 
 
    echo "${initscript}: Placing config check to rc.local..."
-   echo '/etc/init.d/piratebox config &> '$pb_usbdir > /etc/rc.local
+   echo '/etc/init.d/piratebox config &> '"$pb_usbdir/apply_config.log" > /etc/rc.local
 }
 
 pb_update() {
