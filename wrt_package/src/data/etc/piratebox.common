@@ -387,6 +387,8 @@ pb_init() {
 
    echo "${initscript}: Placing config check to rc.local..."
    echo '/etc/init.d/piratebox config &> '"$pb_usbdir/apply_config.log" > /etc/rc.local
+   #whatever do a chmod on rc.local
+   chmod u+x /etc/rc.local
 }
 
 pb_update() {
