@@ -18,11 +18,20 @@ pb_pbmount="/opt/piratebox"
 # Backup Url for downloading Image
 pb_pb_srcImg_url="http://piratebox.aod-rpg.de/offlineArt_0.1_img.gz"
 
-###offlineArt Modfications
+###offlineArt Modfications 
+####  Ext root folder used by PirateBox instal procedure
+####     This swaps the normal /opt/piratebox/www folder to a 
+####     folder on the usb stick.
 oa_ext_www="$pb_usbdir/www_alt"
-oa_config="$pb_usbdir/config/set"
-oa_current_config="$pb_usbdir/config"
+####  Content Folder
+####      Will contain the files of the Artist  
 oa_ext_www_content="$oa_ext_www/content"
+
+#### SetUp the folders for non-terminal configuration of the artBox
+####   config/set contains nothing and there will be looked for changes (new files)
+oa_config="$pb_usbdir/config/set"
+####   config  contains the current configuration
+oa_current_config="$pb_usbdir/config"
 
 
 oa_cfg_ssid="ssid.txt"
@@ -428,6 +437,7 @@ pb_update() {
       opkg -d piratebox install php5-mod-json
       opkg -d piratebox install php5-mod-http
 
+      ### Prepare PHP Stuff & enabling modules
       ln -s /mnt/ext/etc/php.ini /etc
       sed -i 's,;extension=gd.so,extension=gd.so,g' /etc/php.ini
       sed -i 's,;extension=json.so,extension=json.so,g' /etc/php.ini

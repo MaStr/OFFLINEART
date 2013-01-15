@@ -1,0 +1,200 @@
+
+
+      offline
+               A
+                R
+                 T
+
+
+   Idea & Sponsored by:  Aram Bartholl   < @  >       http://www.datenform.de
+   Package written  by:  Matthias Strubel  < matthias.strubel@aod-rpg.de >   
+
+   The whole offlineArt Package is licenced unter GPL-3 !
+
+   Changes:
+     2013-01-15   MaStr   Introduction & Release preparetions
+
+
+   1. Introduction
+
+ Inspired by David Darts' PirateBox, the offlineArt brings digital Art to your home. 
+ It consists of a router, and USB-stick and some software.
+    More about offlineArt in general:  http://www.offlineArt.com
+
+ Matthias' Sidenote: This github Project may be used as a idea how to customize a PirateBox
+image.
+
+   x. Technical notes about the project..
+
+This project is some sort of a fork form the original PirateBox sources. It reuses the 
+implemented - so called "Hooks" to interfere in the normal PirateBox startup. 
+Combinded with the customized WRT-Package it deployes the special PirateBox image and 
+offers new possibilities for changing partical settings without locking into the hardware
+and to customization with a terminal.
+
+There is currently no laptop support!
+
+     xx. The modified OpenWRT - Package.
+
+Beside some modification on the Makefile  (compared to the MaStr/mkPirateBox ) the main 
+modifications are done on wrt_package/src/data/etc/piratebox.common 
+
+These modifications are:
+    #  Change in default $pb_pb_srcImg_url  to the future downloade image (containing several 
+          scripts and original PirateBox stuff
+    #  Change in default $pb_pb_srcImg to a new dataset name
+    #  Change in default folder for USB-Stuff in $pb_usbdir  to "offlineArt"
+    #  Change in default $pb_wireless_ssid and $pb_hostname to "offlineArt" and "offlineArt.lan"
+    #  Inserted new variables starting with oa_   These are described in piratebox.common
+    #  Removed not hostname generation ( in 0.6. it wasn't optional)
+    #  Encapsuled setup of hostname & SSID in functions
+    #  Inerted a uci-set for txpower  to wifi-device[0]  (it set to 25)
+    #  Added folder creation to pb_init() (see below)
+    #  Enabling rc.local (currently overwriting) with check of config-folder
+    #  Added even more packages that are getting installed during pb_update. These packages are
+    ####  lighttpd-mod-accesslog
+    ####  lighttpd-mod-simple-vhost  (not used at all)
+    ####  php5
+    ####  php5-cgi
+    ####  php5-mod-json
+    ####  php5-mod-gd
+    ####  php5-http
+    # Added preparing for php.ini (linking and modifing for modules)
+    # Added several functions for analyzing & filling up config folder.
+    # Every $$$$.txt file got a oa_config_set_$$$$ function  (these functions are called dynamically 
+        in oa_config_lookup_and_set_step() )  
+
+Beside of these changes above, there are customization in etc/init.d/piratebox to call config & config_change
+from console.. and rc.local.
+
+During the installation of the OpenWRT there are several things done:
+
+    # Created /usr/local        - (PirateBox default for ext root)
+    #         /opt/piratebox    - (PirateBox default for PirateBox' image file)
+    # Installed & setup PHP & Python
+    # Activated www folder on the USB stick  
+    # initialized rc.local 
+    # Switched  hostname & SSID - (PirateBox default)
+    # Enabled wifi              - (PirateBox default)
+    # TXPower is set to my know maximum 
+    # Initial config status is written
+
+In the end of the normal install you should end up with the following directories on your 
+USB Sticks:
+
+    offlineArt/                 - main directory;
+    offlineArt/config           - keeps the current configuration
+    offlineArt/config/set       - empty; move changeable configs down there
+    offlineArt/ext_www          - lighttpd base directory for www stuff
+    offlineArt/ext_www/content  - There the artFiles should be located
+    offlineArt/Shared           - not used
+    offlineArt/tmp              - used by lighttpd in case you want to use upload (on your side)
+
+The following files are getting generated on the USB drive
+
+    offlineArt/config/           
+                      txpower.txt   - current txpower of wifi card 0
+                      ssid.txt      - current ssid of wifi interface 0
+                      hostname.txt  - current hostname set on the system
+                                        is used later for redirection
+                      channel.txt   - current channel of wifi card 0
+
+
+During startup the following folder will be read:
+
+    offlineArt/config/set
+
+Is the folder containing any files machting to the name pattern above, then the configuration 
+will be applied:
+
+    1. reading the $$$$$.txt file
+    2. setting the paramter via uci or custom function 
+    3. removing the file
+    4. Puking out the current configurations
+    5. rebooting system after all changes are done
+
+
+There is a logfile, which is always written during bootup and doing changes, which you can find
+on the USB Stick:
+
+   offlineArt/apply_config.log 
+
+Currently there is no valuation of the stuff you are entering in the .txt files. Keep it clean 
+and avoid a carrige return at the end of the line and special characters in hostname&SSID . 
+
+   x.x. Modifications in PirateBox image
+
+The modification of the PirateBox uses hooks introduced in PirateBoxScripts_Webserver 0.3.2 . 
+These are empty .sh files called during the phases like initialisation, startup, stop etc.
+Hooks and files that replaces current are located in the repository-folder 
+
+	custom_image/mod_data
+
+The directory structure looks like the structure you find in /opt/piratebox .  All the files
+are copied over to the mounted original PirateBox-image during a "make". 
+
+Because in the PirateBoxScripts_WebServer 0.6 there are some limitations, because "stock"
+have to overwritten during make
+
+        bin/shoutbox_stuff.sh          - emptied out to disable chat relevant stuff
+        conf/lighttpd/lighttpd.conf    - Replaced; disables a few configuration
+
+New:
+        conf/lighttpd/offlineArt_mod  - includes configuration for .php files
+                                        Includes "include" for generated lighttpd file 
+						"offlineArt_mod_gen" (will be discussed later)
+                                                     
+                                         
+While this make following Changes are made in 
+		piratebox.conf
+
+  # disable Droopy
+  # disable chat resetting
+
+
+OfflineArt uses only one hook:  "hook_piratebox_start.sh" which is called during startup.
+
+In this hook the offlineArt_mod_gen include member for lighttpd is written. After this is 
+done the hook also generates a new redirect.html and index.html based on the hostname.
+This happens on  _____ every startup _____  ... if you want to modify these; you have to 
+customize /opt/piratebox/bin/hook_piratebox_start.sh
+
+   x.x.x offlineArt_mod_gen 
+
+This file is responsible for different behavior depending on the entered hostname. 
+The hostname is resolved during a uci command. Then the behaviour differs into
+
+    entered URL(host) =! hostname
+       ---> use /opt/piratebox/www  as document root (linked to <usb>/offlineArt/ext_www during first init)
+       ---> for 404 errors  use /redirect.html  for redirecting to http://$hostname/
+       ---> write access-log :   <usb>/offlineArt/general_access.log 
+
+    entered URL(host) == hostname 
+       ---> use /opt/piratebox/www/content  as document root 
+       ---> deliver a 404
+       ---> write access-log :   <usb>/offlineArt/content_access.log
+
+
+
+
+   x. Tested on devices
+
+
+
+   x. Install steps
+
+
+
+   x. Customization hints                    
+
+
+   x. FAQ
+
+   xx. How & Where put the art files to?
+
+Switch your artbox offline and take the USB stick to your computer. You will find an folder called:
+
+    <device>/offlineArt/ext_www/content
+
+Leave the content of ext_www untouched, because it is responsible for fixing issues with iOs devices.
+
