@@ -1,4 +1,4 @@
-#############################################################################
++#############################################################################
 # PirateBox global config. /etc/init.d/piratebox setup to take effect
 
 pb_ip="192.168.1.1"
@@ -439,6 +439,7 @@ pb_update() {
 
       ### Prepare PHP Stuff & enabling modules
       ln -s /mnt/ext/etc/php.ini /etc
+      sed -i 's,extension_dir = "/usr/lib/php",extension_dir = "/usr/local/lib/php",g' /etc/php.ini
       sed -i 's,;extension=gd.so,extension=gd.so,g' /etc/php.ini
       sed -i 's,;extension=json.so,extension=json.so,g' /etc/php.ini
   fi
