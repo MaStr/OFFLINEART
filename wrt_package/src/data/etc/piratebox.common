@@ -532,7 +532,7 @@ oa_uci_export(){
 
 oa_config_set_ssid(){
      echo "--->SSID: $1<----"
-     pb_setSSID $1
+     pb_setSSID "$1"
 #     uci set "wireless.@wifi-iface[0].ssid=$1"
 }
 
@@ -559,7 +559,7 @@ oa_config_lookup_and_set_step(){
 
     if [ -f $filename ] ; then
         echo "Found config for $config"
-	oa_config_set_$config `cat $filename `
+	oa_config_set_$config "`cat $filename `"
 	echo "   removing  $filename"
 	rm  $filename
 	changed=1
