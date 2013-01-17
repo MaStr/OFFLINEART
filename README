@@ -1,6 +1,6 @@
 
 
-      offline
+      OFFLINE
                A
                 R
                  T
@@ -9,7 +9,7 @@
    Idea & Sponsored by:  Aram Bartholl     < bartholl_at_datenform.de >       http://datenform.de/
    Package written  by:  Matthias Strubel  < matthias.strubel@aod-rpg.de >   
 
-   The whole offlineArt Package is licenced unter GPL-3 !
+   The whole OFFLINEART Package is licenced unter GPL-3 !
 
    Changes:
      2013-01-15   MaStr   Introduction & Release preparetions
@@ -17,9 +17,9 @@
 
    1. Introduction
 
- Inspired by David Darts' PirateBox, the offlineArt brings digital Art to your home. 
+ Inspired by David Darts' PirateBox, the OFFLINEART brings digital Art to your home. 
  It consists of a router, and USB-stick and some software.
-    More about offlineArt in general:  http://www.offlineArt.net
+    More about OFFLINEART in general:  http://www.offlineart.net
 
  Matthias' Sidenote: This github Project may be used as a idea how to customize a PirateBox
 image.
@@ -152,7 +152,7 @@ While this make following Changes are made in
   # disable chat resetting
 
 
-OfflineArt uses only one hook:  "hook_piratebox_start.sh" which is called during startup.
+OFFLINEART uses only one hook:  "hook_piratebox_start.sh" which is called during startup.
 
 In this hook the offlineArt_mod_gen include member for lighttpd is written. After this is 
 done the hook also generates a new redirect.html and index.html based on the hostname.

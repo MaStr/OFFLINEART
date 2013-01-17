@@ -18,11 +18,11 @@ fi
  echo "------------------ Running $0 ------------------"
 
 
-echo "bringing some init files to $WWW_FOLDER/content if no index-file exists"
 
 if [ -f $WWW_FOLDER/content/index.* ] ; then
-
+   echo "Content found, do nothing"
+else
+   echo "bringing some init files to $WWW_FOLDER/content if no index-file exists"
    SRC_FOLDER=$PIRATEBOX_FOLDER/src_content
-   cp -vr $SRC_FOLDER/* $WWW_FOLDER/content/index.* 
-
+   cp -vr $SRC_FOLDER/* $WWW_FOLDER/content/
 fi
