@@ -58,7 +58,7 @@ echo '
 Redirecting to <a href="=http://'$un_hostname'/">'$un_hostname'</a>
 </body>
 </html> 
-' >> $WWW_FOLDER/redirect.html
+' > $WWW_FOLDER/redirect.html
 cp $WWW_FOLDER/redirect.html $WWW_FOLDER/index.html
 
 echo " ... generation done"
