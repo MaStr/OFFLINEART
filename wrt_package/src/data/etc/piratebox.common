@@ -395,7 +395,14 @@ pb_init() {
 
 
    echo "${initscript}: Placing config check to rc.local..."
-   echo '/etc/init.d/piratebox config &>> '"$pb_usbdir/apply_config.log" > /etc/rc.local
+   sed -i 'exit,#exit,g' /etc/rc.local
+
+   
+
+   echo '/etc/init.d/piratebox config &> '"$pb_usbdir/tmp_apply_config.log"'
+ cat '"$pb_usbdir/tmp_apply_config.log"' >> '"$pb_usbdir/apply_config.log"'
+ rm  '"$pb_usbdir/tmp_apply_config.log"'         >> /etc/rc.local
+
    #whatever do a chmod on rc.local
    chmod u+x /etc/rc.local
 }
