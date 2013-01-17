@@ -1,4 +1,4 @@
-+#############################################################################
+#############################################################################
 # PirateBox global config. /etc/init.d/piratebox setup to take effect
 
 pb_ip="192.168.1.1"
@@ -16,7 +16,7 @@ pb_pb_srcImg="$pb_usbmount/offlineArt_0.1_img.gz"
 pb_pbimg="$pb_usbdir/pbIMG_ws.img"
 pb_pbmount="/opt/piratebox"
 # Backup Url for downloading Image
-pb_pb_srcImg_url="http://piratebox.aod-rpg.de/offlineArt_0.1_img.gz"
+pb_pb_srcImg_url="http://offlineart.net/install/offlineArt_0.1_img.gz"
 
 ###offlineArt Modfications 
 ####  Ext root folder used by PirateBox instal procedure
@@ -399,9 +399,9 @@ pb_init() {
 
    
 
-   echo '/etc/init.d/piratebox config &> '"$pb_usbdir/tmp_apply_config.log"'
- cat '"$pb_usbdir/tmp_apply_config.log"' >> '"$pb_usbdir/apply_config.log"'
- rm  '"$pb_usbdir/tmp_apply_config.log"'         >> /etc/rc.local
+   echo '/etc/init.d/piratebox config &> ' "$pb_usbdir/tmp_apply_config.log"  >> /etc/rc.local
+   echo 'cat ' "$pb_usbdir/tmp_apply_config.log"' >> ' "$pb_usbdir/apply_config.log"   >> /etc/rc.local
+   echo 'rm  '"$pb_usbdir/tmp_apply_config.log"          >> /etc/rc.local
 
    #whatever do a chmod on rc.local
    chmod u+x /etc/rc.local
@@ -446,8 +446,8 @@ pb_update() {
 
       ### Prepare PHP Stuff & enabling modules
       ln -s /mnt/ext/etc/php.ini /etc
-      sed -i 's,doc_root = "/www",;doc_root = "/www",g' /etc/php.ini
-      sed -i 's,extension_dir = "/usr/lib/php",extension_dir = "/usr/local/lib/php",g' /etc/php.ini
+      sed -i 's,doc_root = \"/www\",;doc_root = \"/www\",g' /etc/php.ini
+      sed -i 's,extension_dir = \"/usr/lib/php\",extension_dir = \"/usr/local/lib/php\",g' /etc/php.ini
       sed -i 's,;extension=gd.so,extension=gd.so,g' /etc/php.ini
       sed -i 's,;extension=json.so,extension=json.so,g' /etc/php.ini
   fi
