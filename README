@@ -174,10 +174,19 @@ The hostname is resolved during a uci command. Then the behaviour differs into
        ---> deliver a 404
        ---> write access-log :   <usb>/offlineArt/content_access.log
 
+In addition, the break.log & error.log of lighttpd is reconfigured to
 
+    <usb>/offlineArt/lighttpd_error.log
+    <usb>/offlineArt/lighttpd_break.log
+
+These logfiles are useful, if you encouter problems with php scripts and so on.
 
 
    x. Tested on devices
+
+   Device              OpenWRT            Results
+   ---------           -------            ---------
+   TPLink MR3020       trunk-r33003       works. txpower has no effect
 
 
 

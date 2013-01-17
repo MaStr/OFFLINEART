@@ -29,6 +29,10 @@ hostname=$(echo $un_hostname | tr '[A-Z]' '[a-z]')
 echo '
 server.modules += ( "mod_simple_vhost" )
 
+server.errorlog             = "/mnt/usb/offlineArt/lighttpd_error.log"
+server.breakagelog          = "/mnt/usb/offlineArt/lighttpd_break.log"
+
+
 server.document-root = "'$WWW_FOLDER'"
 
 $HTTP["host"] == "'$hostname'" {
