@@ -1,5 +1,5 @@
 NAME = offlineArt
-VERSION = 0.1.1
+VERSION = 0.1.2
 
 ARCH = all
 IPK = $(NAME)_$(VERSION)_$(ARCH).ipk
