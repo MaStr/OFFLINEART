@@ -204,18 +204,35 @@ These logfiles are useful, if you encouter problems with php scripts and so on.
 
    x. Tested on devices
 
-   Device              OpenWRT            Results
-   ---------           -------            ---------
-   TPLink MR3020       trunk-r33003       works. txpower has no effect
+The following devices were used for the first implementation. These aren't the only one where the 
+package can run. Added "Working USB Sticks" because, it seems that the Cruzer Fit performs quite well 
+(other USB sticks are working, too) .
 
+   Device                  OpenWRT                         Results
+   ---------               -------                         ---------
+   TPLink MR3020           trunk-r33003                    works. txpower has no effect
+   TPLink WR842ND          AA 12.09-beta ( r33312 )        works. txpower seems to work.
+   Buffalo WZR-HP-AG 300h  AA 12.09-beta ( r33312 )	   worked quite normal (first box had some trouble)
+							   txpower seems to work
+   Linksys WRT160NL        AA 12.09-beta2 ( r33883)        works. txpower, not sure.
+   TPLink  WR1043ND(Ger)   AA 12.09-beta2 ( r33883)        works
+
+  
+   Workin USB Sticks
+   -----------------
+   SanDisk  Cruzer Fit 16GB
+   Kingston DTSE9H 16GB 
+ 
+   ... but every other USB Stick with a good read-performance should work too
 
 
    x. Install steps
 
-
+     ... to fill up...
 
    x. Customization hints                    
 
+     ... to be filled up ...
 
    x. FAQ
 
@@ -226,4 +243,15 @@ Switch your artbox offline and take the USB stick to your computer. You will fin
     <device>/offlineArt/ext_www/content
 
 Leave the content of ext_www untouched, because it is responsible for fixing issues with iOs devices.
+
+
+
+To be done
+---
+
+* Fill up the README file
+* Prepare downloadble packages
+* Remove Bug with reverse-Hostname lookup (not sooo important)
+* Insert a "please don't cache" instruction to redirect page (causes trouble, If you have a lot of boxes and the user does 
+stupid reloads ( I did and broke my browser's cache )
 
