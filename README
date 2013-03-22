@@ -1,5 +1,4 @@
 
-
 ------------------------------------------------------------------------------                   
 ///////////////////////////////////////////////////////////////////////////////
 -------------------------------------------------------------------------------                   
@@ -228,7 +227,21 @@ package can run. Added "Working USB Sticks" because, it seems that the Cruzer Fi
 
    x. Install steps
 
-     ... to fill up...
+   x.x in short:
+     1. Flash router's firmware to OpenWRT
+     2. Modify network settings, that the device has internet access
+     3. run
+
+           opkg update
+           opkg install http://offlineart.net/install/offlineArt_0.1.2_all.ipk
+
+      4. unplug WAN cable and reboot.
+
+     OFFLINEART install package: http://offlineart.net/install/offlineArt_0.1.2_all.ipk
+
+   x.x detailed:
+
+     ... to be filled up ...
 
    x. Customization hints                    
 
