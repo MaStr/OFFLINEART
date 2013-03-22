@@ -5,7 +5,7 @@ ARCH = all
 #Source data
 WGET = wget -c
 PIRATEBOX_IMG = source_piratebox_ws_img.tar.gz
-PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
+PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.tar.gz"
 
 # Data Folder from 
 MOD_SRC_FOLDER=mod_data
