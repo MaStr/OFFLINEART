@@ -57,6 +57,7 @@ echo '
 <html>
 <head><title>Redirecting...</title>
 <meta http-equiv="refresh" content="0;url=http://'$un_hostname'/" />
+<meta http-equiv='cache-control' content='no-cache'>
 </head>
 <body>
 Redirecting to <a href="=http://'$un_hostname'/">'$un_hostname'</a>

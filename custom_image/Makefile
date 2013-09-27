@@ -1,5 +1,5 @@
 NAME = offlineArt
-VERSION = 0.1.2
+VERSION = 0.1.3-image
 ARCH = all
 
 #Source data

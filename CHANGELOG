@@ -1,0 +1,12 @@
+CHANGELOG for OFFLINEART
+
+Version-Notations without a comment are complete releases, which contains an updated OpenWRT-package and an updated image file.
+Versions with "image" is only an updated image file, which can be updated without reinstalling
+
+
+==== 0.1.3-image  ====
+
+	* Fixed captive Portal detection for iOS7
+	* Don't cache redirect-html for not ending up into a browser-loop while visiting a gallery
+
+
