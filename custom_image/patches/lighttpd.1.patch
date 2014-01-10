@@ -1,0 +1,12 @@
+--- lighttpd.conf.orignal	2014-01-10 16:06:32.090191295 +0100
++++ mod_image/image/conf/lighttpd/lighttpd.conf	2014-01-10 16:07:01.000000000 +0100
+@@ -76,6 +76,9 @@ $HTTP["url"] =~ "^/board/" {
+ server.modules += ( "mod_accesslog" )
+ #accesslog.filename = "/opt/piratebox/tmp/access.log"
+ 
++### Include OFFLINEART MODIFICATIONS
++include "/opt/piratebox/conf/lighttpd/offlineArt_mod"
++
+ ## React on CPA support from iOS devices and deliver always a "success" message
+ $HTTP["useragent"] =~ "CaptiveNetworkSupport" {
+         server.document-root =  "/opt/piratebox/www/library/test/"

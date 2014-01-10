@@ -1,5 +1,5 @@
 NAME = offlineArt
-VERSION = 0.1.3-image
+VERSION = 0.1.4-image
 ARCH = all
 
 #Source data
@@ -51,7 +51,8 @@ $(MOD_IMAGE_TGZ): $(MOD_FOLDER) $(MOUNT_POINT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
 #	sed 's:HOST="piratebox.lan":HOST="piratechest.lan":'  -i  $(MOUNT_POINT)/conf/piratebox.conf
 	sudo sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(MOUNT_POINT)/conf/piratebox.conf
 	sudo sed 's:RESET_CHAT="yes":RESET_CHAT="no":'  -i  $(MOUNT_POINT)/conf/piratebox.conf
-	sudo  chmod a+w mod_image/image/conf/lighttpd/lighttpd.conf && echo 'include "/opt/piratebox/conf/lighttpd/offlineArt_mod"' >>  $(MOUNT_POINT)/conf/lighttpd/lighttpd.conf
+	sudo patch  $(MOUNT_POINT)/conf/lighttpd/lighttpd.conf patches/lighttpd.1.patch 
+	sudo  chmod a+w  $(MOUNT_POINT)/conf/lighttpd/lighttpd.conf 
 	sudo  umount  $(MOUNT_POINT)
 	tar czf  $(MOD_IMAGE_TGZ)  $(MOD_IMAGE)
 	gzip -c $(MOD_IMAGE) > $(MOD_IMAGE_GZ)
